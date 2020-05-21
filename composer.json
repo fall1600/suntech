@@ -1,6 +1,7 @@
 {
     "name": "fall1600/suntech",
     "description": "implements of suntech",
+    "keywords": ["suntech", "payment"],
     "type": "library",
     "license": "MIT",
     "authors": [
@@ -10,5 +11,13 @@
         }
     ],
     "minimum-stability": "stable",
-    "require": {}
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "fall1600\\Package\\Suntech\\": ""
+        },
+        "exclude-from-classmap": [
+            "/Tests/"
+        ]
+    }
 }
