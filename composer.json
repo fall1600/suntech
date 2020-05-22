@@ -11,7 +11,9 @@
         }
     ],
     "minimum-stability": "stable",
-    "require": {},
+    "require": {
+        "myclabs/php-enum": "^1.7"
+    },
     "autoload": {
         "psr-4": {
             "fall1600\\Package\\Suntech\\": ""
