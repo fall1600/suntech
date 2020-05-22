@@ -7,6 +7,8 @@ use fall1600\Package\Suntech\Info\InfoDecorator;
 
 class Content extends InfoDecorator
 {
+    public const SIZE = 400;
+
     /**
      * @var Info
      */
@@ -29,7 +31,7 @@ class Content extends InfoDecorator
     {
         return $this->info->getInfo() +
             [
-                'OrderInfo' => urlencode($this->content),
+                'OrderInfo' => urlencode(mb_substr($this->content, 0, static::SIZE)),
             ];
     }
 }
