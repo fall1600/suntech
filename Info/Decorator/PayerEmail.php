@@ -5,7 +5,7 @@ namespace fall1600\Package\Suntech\Info\Decorator;
 use fall1600\Package\Suntech\Info\Info;
 use fall1600\Package\Suntech\Info\InfoDecorator;
 
-class Email extends InfoDecorator
+class PayerEmail extends InfoDecorator
 {
     /**
      * 消費者電子郵件
