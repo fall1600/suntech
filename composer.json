@@ -12,6 +12,7 @@
     ],
     "minimum-stability": "stable",
     "require": {
+        "ext-ctype": "*",
         "ext-mbstring": "*",
         "myclabs/php-enum": "^1.7"
     },

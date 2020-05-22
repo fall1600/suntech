@@ -7,6 +7,8 @@ use fall1600\Package\Suntech\Info\InfoDecorator;
 
 class OrderNumber extends InfoDecorator
 {
+    public const SIZE = 20;
+
     /**
      * @var Info
      */
@@ -26,7 +28,7 @@ class OrderNumber extends InfoDecorator
     {
         $this->info = $info;
 
-        $this->orderNumber = $orderNumber;
+        $this->setOrderNumber($orderNumber);
     }
 
     public function getInfo()
@@ -35,5 +37,18 @@ class OrderNumber extends InfoDecorator
             [
                 'Td' => $this->orderNumber,
             ];
+    }
+
+    protected function setOrderNumber(string $orderNumber)
+    {
+        if (! ctype_alnum($orderNumber)) {
+            throw new \LogicException("contains unsupported char $orderNumber");
+        }
+
+        if (strlen($orderNumber) > static::SIZE) {
+            throw new \LogicException("order number is too long");
+        }
+
+        $this->orderNumber = $orderNumber;
     }
 }
