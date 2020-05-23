@@ -18,11 +18,9 @@ class Atm extends OfflinePay
      */
     protected $agencyBank;
 
-    public function __construct(Info $info, string $agencyType, string $agencyBank, int $ttl = OfflinePay::TTL)
+    public function __construct(Info $info, int $ttl = OfflinePay::TTL, string $agencyBank = BankType::TAISHIN)
     {
         parent::__construct($info, $ttl);
-
-        $this->setAgencyType($agencyType);
 
         $this->setAgencyBank($agencyBank);
     }
@@ -31,18 +29,9 @@ class Atm extends OfflinePay
     {
         return $this->info->getInfo() +
             [
-                'AgencyType' => $this->agencyType,
+                'AgencyType' => AgencyType::ONLY_ATM,
                 'AgencyBank' => $this->agencyBank,
             ];
-    }
-
-    protected function setAgencyType(string $agencyType)
-    {
-        if (! AgencyType::isValid($agencyType)) {
-            throw new \LogicException("unsupported agencyType: $agencyType");
-        }
-
-        $this->agencyType = $agencyType;
     }
 
     protected function setAgencyBank(string $agencyBank)
