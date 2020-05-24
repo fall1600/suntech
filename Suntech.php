@@ -89,7 +89,7 @@ class Suntech
      * @param string|null $orderNumber
      * @param string|null $note1
      * @param string|null $note2
-     * @return mixed
+     * @return array
      */
     public function query(
         OrderInterface $order,
@@ -104,6 +104,10 @@ class Suntech
 
         $url = $this->isProduction? static::QUERY_URL_PRODUCTION: static::QUERY_URL_TEST;
 
+        $str4checksum =
+            $this->merchant->getId() . $this->merchant->getTradePassword() .
+            $order->getAmount() . $buysafeno . $orderNumber . $note1 . $note2;
+
         $payload = [
             'web' => $this->merchant->getId(),
             'MN' => $order->getAmount(),
@@ -111,12 +115,7 @@ class Suntech
             'Td' => $orderNumber,
             'note1' => $note1,
             'note2' => $note2,
-        ];
-
-        $checksum = $this->merchant->countChecksum($payload);
-
-        $payload += [
-            'ChkValue' => $checksum,
+            'ChkValue' => $this->merchant->countChecksum($str4checksum),
         ];
 
         $ch = curl_init($url);

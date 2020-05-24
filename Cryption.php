@@ -4,21 +4,12 @@ namespace fall1600\Package\Suntech;
 
 trait Cryption
 {
-    protected $tradePassword;
-
     /**
-     * @param array $payload
+     * @param string $input
      * @return string
      */
-    public function countChecksum(array $payload)
+    public function countChecksum(string $input)
     {
-        $str = $payload['web'] .
-            $this->tradePassword.
-            $payload['MN'].
-            $payload['buysafeno'].
-            $payload['Td'].
-            $payload['note1'].
-            $payload['note2'];
-        return strtoupper(sha1($str));
+        return strtoupper(sha1($input));
     }
 }

@@ -64,7 +64,13 @@ class Merchant
         }
 
         $responseChecksum = $this->response->getChecksum();
-//        $countedChecksum = $this->countChecksumByArray($this->response->getOriginInfoPayload());
+        $countedChecksum = $this->countChecksum(
+            $this->response->getMerchantId().
+            $this->getTradePassword().
+            $this->response->getBuySafeNo().
+            $this->response->getAmount().
+            $this->response->getStatusCode()
+        );
         return $responseChecksum === $countedChecksum;
     }
 
