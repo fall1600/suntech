@@ -2,9 +2,11 @@
 
 namespace fall1600\Package\Suntech\Info\Decorator;
 
-use fall1600\Package\Suntech\Constants\AgencyType;
 use fall1600\Package\Suntech\Info\Info;
 
+/**
+ * 超商代收(代碼)
+ */
 class Cvs extends OfflinePay
 {
     /**
@@ -30,9 +32,8 @@ class Cvs extends OfflinePay
 
     public function getInfo()
     {
-        return $this->info->getInfo() +
+        return parent::getInfo() +
             [
-                'AgencyType' => AgencyType::ONLY_BARCODE,
                 'UserNo' => $this->userNo ?? '',
                 'BillDate' => $this->billDate ?? '',
             ];

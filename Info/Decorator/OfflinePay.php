@@ -15,7 +15,7 @@ abstract class OfflinePay extends InfoDecorator
     protected $info;
 
     /**
-     * 繳費期限, 單位: 天
+     * ttl: 繳費期限, 單位: 天
      * @var int
      */
     protected $ttl;
@@ -27,16 +27,17 @@ abstract class OfflinePay extends InfoDecorator
         $this->setTtl($ttl);
     }
 
-    public function getInfo()
-    {
-        return [
-            'DueDate' => $this->countDueDate(),
-        ];
-    }
-
     protected function countDueDate()
     {
         return date('Ymd', strtotime("+{$this->ttl} days"));
+    }
+
+    public function getInfo()
+    {
+        return $this->info->getInfo() +
+            [
+                'DueDate' => $this->countDueDate(),
+            ];
     }
 
     protected function setTtl(int $ttl)

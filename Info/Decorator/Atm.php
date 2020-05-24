@@ -18,17 +18,33 @@ class Atm extends OfflinePay
      */
     protected $agencyBank;
 
-    public function __construct(Info $info, int $ttl = OfflinePay::TTL, string $agencyBank = BankType::TAISHIN)
+    /**
+     * @var string|null
+     */
+    protected $userNo;
+
+    /**
+     * @var string|null
+     */
+    protected $billDate;
+
+    public function __construct(Info $info, int $ttl = OfflinePay::TTL, string $agencyBank = BankType::TAISHIN, string $userNo = null, string $billDate = null)
     {
         parent::__construct($info, $ttl);
 
         $this->setAgencyBank($agencyBank);
+
+        $this->userNo = $userNo;
+
+        $this->billDate = $billDate;
     }
 
     public function getInfo()
     {
-        return $this->info->getInfo() +
+        return parent::getInfo() +
             [
+                'UserNo' => $this->userNo ?? '',
+                'BillDate' => $this->billDate ?? '',
                 'AgencyType' => AgencyType::ONLY_ATM,
                 'AgencyBank' => $this->agencyBank,
             ];
