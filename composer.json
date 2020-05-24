@@ -13,6 +13,8 @@
     "minimum-stability": "stable",
     "require": {
         "ext-ctype": "*",
+        "ext-curl": "*",
+        "ext-json": "*",
         "ext-mbstring": "*",
         "myclabs/php-enum": "^1.7"
     },

@@ -2,10 +2,10 @@
 
 namespace fall1600\Package\Suntech;
 
-use fall1600\Package\Suntech\Info\Info;
-
 class Merchant
 {
+    use Cryption;
+
     /**
      * 商家代號
      * @var string
@@ -33,11 +33,18 @@ class Merchant
     }
 
     /**
-     * @param Info $info
      * @return string
      */
-    public function countChecksum(Info $info)
+    public function getId()
     {
+        return $this->id;
+    }
 
+    /**
+     * @return string
+     */
+    public function getTradePassword()
+    {
+        return $this->tradePassword;
     }
 }

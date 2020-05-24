@@ -2,6 +2,7 @@
 
 namespace fall1600\Package\Suntech;
 
+use fall1600\Package\Suntech\Contracts\OrderInterface;
 use fall1600\Package\Suntech\Info\Info;
 
 class Suntech
@@ -17,6 +18,18 @@ class Suntech
      * @var string
      */
     public const CHECKOUT_URL_PRODUCTION = 'https://www.esafe.com.tw/Service/Etopm.aspx';
+
+    /**
+     * 查詢-測試環境
+     * @var string
+     */
+    public const QUERY_URL_TEST = 'https://test.esafe.com.tw/Service/PaymentCheck.aspx';
+
+    /**
+     * 查詢-正式環境
+     * @var string
+     */
+    public const QUERY_URL_PRODUCTION = 'https://www.esafe.com.tw/Service/PaymentCheck.aspx';
 
     /**
      * 決定URL 要使用正式或測試機
@@ -70,8 +83,51 @@ class Suntech
         return $form;
     }
 
-    public function query()
-    {
+    /**
+     * @param OrderInterface $order
+     * @param string|null $buysafeno 紅陽提供的交易單號
+     * @param string|null $orderNumber
+     * @param string|null $note1
+     * @param string|null $note2
+     * @return mixed
+     */
+    public function query(
+        OrderInterface $order,
+        string $buysafeno = null,
+        string $orderNumber = null,
+        string $note1 = null,
+        string $note2 = null
+    ) {
+        if (! $this->merchant) {
+            throw new \LogicException('empty merchant');
+        }
+
+        $url = $this->isProduction? static::QUERY_URL_PRODUCTION: static::QUERY_URL_TEST;
+
+        $payload = [
+            'web' => $this->merchant->getId(),
+            'MN' => $order->getAmount(),
+            'buysafeno' => $buysafeno,
+            'Td' => $orderNumber,
+            'note1' => $note1,
+            'note2' => $note2,
+        ];
+
+        $checksum = $this->merchant->countChecksum($payload);
+
+        $payload += [
+            'ChkValue' => $checksum,
+        ];
+
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($payload));
+
+        $resp = curl_exec($ch);
+        curl_close($ch);
+
+        return explode('##', $resp);
     }
 
     /**
