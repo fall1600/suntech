@@ -2,6 +2,8 @@
 
 namespace fall1600\Package\Suntech;
 
+use fall1600\Package\Suntech\Exceptions\TradeInfoException;
+
 class Merchant
 {
     use Cryption;
@@ -18,6 +20,11 @@ class Merchant
      */
     protected $tradePassword;
 
+    /**
+     * @var Response
+     */
+    protected $response;
+
     public function __construct(string $id, string $tradePassword)
     {
         $this->id = $id;
@@ -30,6 +37,35 @@ class Merchant
         $this->tradePassword = null;
 
         return $this;
+    }
+
+    /**
+     * @param array $rawData
+     * @throws TradeInfoException
+     */
+    public function setRawData(array $rawData)
+    {
+        if (count($rawData) !== 8 || ! isset($rawData['ChkValue'])) {
+            throw new TradeInfoException('invalid data');
+        }
+
+        $this->response = new Response($rawData);
+        return $this;
+    }
+
+    /**
+     * 用來驗證紅陽來的response 資料是否可信
+     * @return bool
+     */
+    public function validateResponse()
+    {
+        if (! $this->response) {
+            throw new \LogicException('set rawData first');
+        }
+
+        $responseChecksum = $this->response->getChecksum();
+//        $countedChecksum = $this->countChecksumByArray($this->response->getOriginInfoPayload());
+        return $responseChecksum === $countedChecksum;
     }
 
     /**

@@ -6,6 +6,10 @@ trait Cryption
 {
     protected $tradePassword;
 
+    /**
+     * @param array $payload
+     * @return string
+     */
     public function countChecksum(array $payload)
     {
         $str = $payload['web'] .
@@ -15,6 +19,6 @@ trait Cryption
             $payload['Td'].
             $payload['note1'].
             $payload['note2'];
-        return sha1($str);
+        return strtoupper(sha1($str));
     }
 }
