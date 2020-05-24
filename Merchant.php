@@ -21,7 +21,7 @@ class Merchant
     protected $tradePassword;
 
     /**
-     * @var Response
+     * @var QueryResponse
      */
     protected $response;
 
@@ -49,7 +49,7 @@ class Merchant
             throw new TradeInfoException('invalid data');
         }
 
-        $this->response = new Response($rawData);
+        $this->response = new QueryResponse($rawData);
         return $this;
     }
 

@@ -4,7 +4,7 @@ namespace fall1600\Package\Suntech;
 
 use DateTime;
 
-class Response
+class QueryResponse
 {
     /**
      * @var array
