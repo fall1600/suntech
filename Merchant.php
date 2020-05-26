@@ -6,8 +6,6 @@ use fall1600\Package\Suntech\Exceptions\TradeInfoException;
 
 class Merchant
 {
-    use Cryption;
-
     /**
      * 商家代號
      * @var string
@@ -73,6 +71,15 @@ class Merchant
             $this->response->getStatusCode()
         );
         return $responseChecksum === $countedChecksum;
+    }
+
+    /**
+     * @param string $input
+     * @return string
+     */
+    public function countChecksum(string $input)
+    {
+        return strtoupper(sha1($input));
     }
 
     /**

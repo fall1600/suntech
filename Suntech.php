@@ -40,7 +40,7 @@ class Suntech
     /** @var Merchant */
     protected $merchant;
 
-    protected $formId;
+    protected $formId = 'suntech-form';
 
     public function checkout(Info $info)
     {
@@ -69,7 +69,12 @@ class Suntech
 
         $url = $this->isProduction? static::CHECKOUT_URL_PRODUCTION: static::CHECKOUT_URL_TEST;
 
-        $checksum = $this->merchant->countCheckSum($info);
+        $checksum = $this->merchant->countCheckSum(
+            $this->merchant->getId().
+            $this->merchant->getTradePassword().
+            $info->getOrder()->getAmount().
+            $info->getInfo()['Term'] ?? ''
+        );
 
         $form = "<form name='suntech' id='$this->formId' method='post' action='$url' style='display: none'>";
         $form .= "<input type='hidden' name='ChkValue' value='$checksum' />";
