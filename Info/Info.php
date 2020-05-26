@@ -22,9 +22,6 @@ abstract class Info
      */
     protected $payer;
 
-    /** @return array */
-    public abstract function getInfo();
-
     public function __construct(string $merchantId, OrderInterface $order, PayerInterface $payer)
     {
         $this->merchantId = $merchantId;
@@ -32,5 +29,39 @@ abstract class Info
         $this->order = $order;
 
         $this->payer = $payer;
+    }
+
+    public function getInfo()
+    {
+        return [
+            'web' => $this->merchantId,
+            'MN' => $this->order->getAmount(),
+            'sna' => $this->payer->getName(),
+            'sdt' => $this->payer->getTelephone(),
+        ];
+    }
+
+    /**
+     * @return OrderInterface
+     */
+    public function getOrder()
+    {
+        return $this->order;
+    }
+
+    /**
+     * @return PayerInterface
+     */
+    public function getPayer()
+    {
+        return $this->payer;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMerchantId()
+    {
+        return $this->merchantId;
     }
 }

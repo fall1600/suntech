@@ -1,11 +1,8 @@
 <?php
 
-namespace fall1600\Package\Suntech\Info\Decorator;
+namespace fall1600\Package\Suntech\Info;
 
-/**
- * 超商代收(代碼)
- */
-class Cvs extends OfflinePay
+final class AtmInfo extends OfflineInfo
 {
     use ProductTrait;
 
@@ -15,6 +12,10 @@ class Cvs extends OfflinePay
             throw new \LogicException('Cvs payment needs product information, please call appendProduct method');
         }
 
-        return parent::getInfo() + $this->getProductInfo();
+        return parent::getInfo() + $this->getProductInfo() +
+            [
+                'AgencyType' => 1,
+                'AgencyBank' => 0,
+            ];
     }
 }

@@ -35,6 +35,7 @@ class Merchant
     {
         $this->id = null;
         $this->tradePassword = null;
+        $this->response = null;
 
         return $this;
     }

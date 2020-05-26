@@ -1,6 +1,6 @@
 <?php
 
-namespace fall1600\Package\Suntech\Info\Decorator;
+namespace fall1600\Package\Suntech\Info;
 
 use fall1600\Package\Suntech\Contracts\ProductInterface;
 
