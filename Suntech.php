@@ -150,4 +150,15 @@ class Suntech
 
         return $this;
     }
+
+    /**
+     * @param  bool  $isProduction
+     * @return $this
+     */
+    public function setIsProduction(bool $isProduction)
+    {
+        $this->isProduction = $isProduction;
+
+        return $this;
+    }
 }
