@@ -3,6 +3,7 @@
 namespace fall1600\Package\Suntech;
 
 use fall1600\Package\Suntech\Exceptions\TradeInfoException;
+use fall1600\Package\Suntech\Info\Info;
 
 class Merchant
 {
@@ -74,10 +75,31 @@ class Merchant
     }
 
     /**
+     * @param Info $info
+     * @return string
+     */
+    public function countCheckoutChecksum(Info $info)
+    {
+        $parameter = $this->getId().
+            $this->getTradePassword().
+            $info->getOrder()->getAmount().
+            ($info->getInfo()['Term'] ?? '');
+
+        return $this->countChecksum($parameter);
+    }
+
+    /**
+     * @todo
+     */
+    public function countQueryChecksum()
+    {
+    }
+
+    /**
      * @param string $input
      * @return string
      */
-    public function countChecksum(string $input)
+    protected function countChecksum(string $input)
     {
         return strtoupper(sha1($input));
     }
