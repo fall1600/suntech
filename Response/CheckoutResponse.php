@@ -1,19 +1,9 @@
 <?php
 
-namespace fall1600\Package\Suntech;
+namespace fall1600\Package\Suntech\Response;
 
-class CheckoutResponse
+class CheckoutResponse extends AbstractResponse
 {
-    /**
-     * @var array
-     */
-    protected $data;
-
-    public function __construct(array $data)
-    {
-        $this->data = $data;
-    }
-
     /**
      * 紅陽交易編號
      * @return string|null
@@ -68,13 +58,5 @@ class CheckoutResponse
     public function getChecksum()
     {
         return $this->data['ChkValue'] ?? null;
-    }
-
-    /**
-     * @return array
-     */
-    public function getData()
-    {
-        return $this->data;
     }
 }

@@ -1,21 +1,11 @@
 <?php
 
-namespace fall1600\Package\Suntech;
+namespace fall1600\Package\Suntech\Response;
 
 use DateTime;
 
-class QueryResponse
+class QueryResponse extends AbstractResponse
 {
-    /**
-     * @var array
-     */
-    protected $data;
-
-    public function __construct(array $data)
-    {
-        $this->data = $data;
-    }
-
     /**
      * @return string|null
      */
@@ -85,13 +75,5 @@ class QueryResponse
     public function getChecksum()
     {
         return $this->data[7] ?? null;
-    }
-    
-    /**
-     * @return array
-     */
-    public function getData()
-    {
-        return $this->data;
     }
 }
