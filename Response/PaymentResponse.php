@@ -9,21 +9,39 @@ class PaymentResponse extends AbstractResponse
 {
     public function getMerchantId()
     {
-        // TODO: Implement getMerchantId() method.
+        return $this->data['web'] ?? null;
     }
 
     public function getBuySafeNo()
     {
-        // TODO: Implement getBuySafeNo() method.
+        return $this->data['buysafeno'] ?? null;
     }
 
     public function getAmount()
     {
-        // TODO: Implement getAmount() method.
+        return $this->data['MN'] ?? null;
     }
 
     public function getChecksum()
     {
-        // TODO: Implement getChecksum() method.
+        return $this->data['ChkValue'] ?? null;
+    }
+
+    /**
+     * 消費者姓名
+     * @return string|null
+     */
+    public function getPayerName()
+    {
+        return $this->data['Name'] ?? null;
+    }
+
+    /**
+     * 回覆代碼
+     * @return string|null
+     */
+    public function getStatusCode()
+    {
+        return $this->data['errcode'] ?? null;
     }
 }
