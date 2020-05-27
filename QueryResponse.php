@@ -52,6 +52,7 @@ class QueryResponse
 
     /**
      * 回覆代碼
+     *  00(數字)代表交易成功,其餘為交易失敗或退貨/取消交易
      * @return string|null
      */
     public function getStatusCode()

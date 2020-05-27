@@ -69,12 +69,7 @@ class Suntech
 
         $url = $this->isProduction? static::CHECKOUT_URL_PRODUCTION: static::CHECKOUT_URL_TEST;
 
-        $checksum = $this->merchant->countCheckSum(
-            $this->merchant->getId().
-            $this->merchant->getTradePassword().
-            $info->getOrder()->getAmount().
-            $info->getInfo()['Term'] ?? ''
-        );
+        $checksum = $this->merchant->countCheckoutChecksum($info);
 
         $form = "<form name='suntech' id='$this->formId' method='post' action='$url' style='display: none'>";
         $form .= "<input type='hidden' name='ChkValue' value='$checksum' />";
@@ -90,37 +85,27 @@ class Suntech
 
     /**
      * @param OrderInterface $order
-     * @param string|null $buysafeno 紅陽提供的交易單號
-     * @param string|null $orderNumber
-     * @param string|null $note1
-     * @param string|null $note2
+     * @param string $buysafeno 紅陽提供的交易編號
+     * @param string $note1 備註1
+     * @param string $note2 備註1
      * @return array
      */
-    public function query(
-        OrderInterface $order,
-        string $buysafeno = null,
-        string $orderNumber = null,
-        string $note1 = null,
-        string $note2 = null
-    ) {
+    public function query(OrderInterface $order, string $buysafeno = '', string $note1 = '', string $note2 = '')
+    {
         if (! $this->merchant) {
             throw new \LogicException('empty merchant');
         }
 
         $url = $this->isProduction? static::QUERY_URL_PRODUCTION: static::QUERY_URL_TEST;
 
-        $str4checksum =
-            $this->merchant->getId() . $this->merchant->getTradePassword() .
-            $order->getAmount() . $buysafeno . $orderNumber . $note1 . $note2;
-
         $payload = [
             'web' => $this->merchant->getId(),
             'MN' => $order->getAmount(),
             'buysafeno' => $buysafeno,
-            'Td' => $orderNumber,
+            'Td' => $order->getMerchantOrderNo(),
             'note1' => $note1,
             'note2' => $note2,
-            'ChkValue' => $this->merchant->countChecksum($str4checksum),
+            'ChkValue' => $this->merchant->countQueryChecksum($order, $buysafeno, $note1, $note2),
         ];
 
         $ch = curl_init($url);
