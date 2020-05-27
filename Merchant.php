@@ -5,6 +5,8 @@ namespace fall1600\Package\Suntech;
 use fall1600\Package\Suntech\Contracts\OrderInterface;
 use fall1600\Package\Suntech\Exceptions\TradeInfoException;
 use fall1600\Package\Suntech\Info\Info;
+use fall1600\Package\Suntech\Response\CheckoutResponse;
+use fall1600\Package\Suntech\Response\QueryResponse;
 
 class Merchant
 {
