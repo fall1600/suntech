@@ -4,6 +4,9 @@ namespace fall1600\Package\Suntech\Response;
 
 use DateTime;
 
+/**
+ * 查詢結果
+ */
 class QueryResponse extends AbstractResponse
 {
     /**

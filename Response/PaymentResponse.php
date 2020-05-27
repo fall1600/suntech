@@ -2,6 +2,9 @@
 
 namespace fall1600\Package\Suntech\Response;
 
+/**
+ * 付款結果
+ */
 class PaymentResponse extends AbstractResponse
 {
     public function getMerchantId()

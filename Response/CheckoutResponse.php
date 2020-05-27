@@ -2,6 +2,9 @@
 
 namespace fall1600\Package\Suntech\Response;
 
+/**
+ * 交易結果
+ */
 class CheckoutResponse extends AbstractResponse
 {
     /**
