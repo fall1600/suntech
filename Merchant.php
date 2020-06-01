@@ -83,12 +83,25 @@ class Merchant
 
     /**
      * @todo 依交易方式不同而異
+     * @return bool
      */
     public function validateCheckoutResponse()
     {
         if (! $this->checkoutResponse) {
             throw new \LogicException('set rawData first');
         }
+
+        $responseChecksum = $this->checkoutResponse->getChecksum();
+        $countedChecksum = $this->countChecksum(
+            $this->checkoutResponse->getMerchantId().
+            $this->getTradePassword().
+            $this->checkoutResponse->getBuySafeNo().
+            $this->checkoutResponse->getAmount().
+            $this->checkoutResponse->getData()['errcode'].
+            $this->checkoutResponse->getData()['CargoNo']
+        );
+
+        return $responseChecksum === $countedChecksum;
     }
 
     /**
