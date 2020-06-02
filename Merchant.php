@@ -108,4 +108,12 @@ class Merchant
     {
         return $this->tradePassword;
     }
+
+    /**
+     * @return AbstractResponse
+     */
+    public function getResponse()
+    {
+        return $this->response;
+    }
 }
