@@ -16,6 +16,8 @@ class Factory
         switch ($type) {
             case 'query':
                 return new QueryResponse($rawDate);
+            case 'payment':
+                return new PaymentResponse($rawDate);
             case ServiceType::CREDIT:
                 return new CreditCheckoutResponse($rawDate);
             case ServiceType::UNION_PAY:

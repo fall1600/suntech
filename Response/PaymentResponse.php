@@ -44,4 +44,14 @@ class PaymentResponse extends AbstractResponse
     {
         return $this->data['errcode'] ?? null;
     }
+
+    public function prepareChecksumParameter(string $tradePassword)
+    {
+        return $this->getMerchantId().
+            $tradePassword.
+            $this->getBuySafeNo().
+            $this->getAmount().
+            $this->getStatusCode().
+            $this->getData()['CargoNo'];
+    }
 }
