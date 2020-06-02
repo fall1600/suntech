@@ -2,11 +2,10 @@
 
 namespace fall1600\Package\Suntech;
 
-use fall1600\Package\Suntech\Contracts\OrderInterface;
+use fall1600\Package\Suntech\Contracts\ChecksumSubjectInterface;
 use fall1600\Package\Suntech\Exceptions\TradeInfoException;
-use fall1600\Package\Suntech\Info\Info;
-use fall1600\Package\Suntech\Response\CheckoutResponse;
-use fall1600\Package\Suntech\Response\QueryResponse;
+use fall1600\Package\Suntech\Response\AbstractResponse;
+use fall1600\Package\Suntech\Response\Factory;
 
 class Merchant
 {
@@ -22,17 +21,8 @@ class Merchant
      */
     protected $tradePassword;
 
-    /**
-     * 查詢後取得的結果
-     * @var QueryResponse
-     */
-    protected $queryResponse;
-
-    /**
-     * 交易當下產生的結果
-     * @var CheckoutResponse
-     */
-    protected $checkoutResponse;
+    /** @var AbstractResponse */
+    protected $response;
 
     public function __construct(string $id, string $tradePassword)
     {
@@ -45,127 +35,60 @@ class Merchant
         $this->id = $id;
         $this->tradePassword = $tradePassword;
 
-        $this->checkoutResponse = null;
-        $this->queryResponse = null;
+        $this->response = null;
 
         return $this;
     }
 
     /**
      * @param array $rawData
+     * @param string $type
      * @return $this
      * @throws TradeInfoException
      */
-    public function setRawDataForCheckout(array $rawData)
+    public function setRawData(array $rawData, string $type)
     {
         if (! isset($rawData['ChkValue'])) {
             throw new TradeInfoException('invalid data');
         }
 
-        $this->checkoutResponse = new CheckoutResponse($rawData);
+        $this->response = Factory::create($rawData, $type);
         return $this;
     }
 
     /**
-     * @param array $rawData
-     * @return $this
-     * @throws TradeInfoException
-     */
-    public function setRawDataForQuery(array $rawData)
-    {
-        if (count($rawData) !== 8 || ! isset($rawData['ChkValue'])) {
-            throw new TradeInfoException('invalid data');
-        }
-
-        $this->queryResponse = new QueryResponse($rawData);
-        return $this;
-    }
-
-    /**
-     * @todo 依交易方式不同而異
      * @return bool
      */
-    public function validateCheckoutResponse()
+    public function validateResponse()
     {
-        if (! $this->checkoutResponse) {
+        if (! $this->response) {
             throw new \LogicException('set rawData first');
         }
 
-        $responseChecksum = $this->checkoutResponse->getChecksum();
-        $countedChecksum = $this->countChecksum(
-            $this->checkoutResponse->getMerchantId().
-            $this->getTradePassword().
-            $this->checkoutResponse->getBuySafeNo().
-            $this->checkoutResponse->getAmount().
-            $this->checkoutResponse->getData()['errcode'].
-            $this->checkoutResponse->getData()['CargoNo']
-        );
-
-        return $responseChecksum === $countedChecksum;
-    }
-
-    /**
-     * 用來驗證紅陽來的response 資料是否可信
-     * @return bool
-     */
-    public function validateQueryResponse()
-    {
-        if (! $this->queryResponse) {
-            throw new \LogicException('set rawData first');
-        }
-
-        $responseChecksum = $this->queryResponse->getChecksum();
-        $countedChecksum = $this->countChecksum(
-            $this->queryResponse->getMerchantId().
-            $this->getTradePassword().
-            $this->queryResponse->getBuySafeNo().
-            $this->queryResponse->getAmount().
-            $this->queryResponse->getStatusCode()
+        $responseChecksum = $this->response->getChecksum();
+        $countedChecksum = $this->doCountChecksum(
+            $this->response->prepareChecksumParameter($this->tradePassword)
         );
         return $responseChecksum === $countedChecksum;
     }
 
     /**
-     * 結帳用的檢核碼
-     * @param Info $info
+     * @param ChecksumSubjectInterface $info
      * @return string
      */
-    public function countCheckoutChecksum(Info $info)
+    public function countChecksum(ChecksumSubjectInterface $info)
     {
-        $parameter = $this->getId().
-            $this->getTradePassword().
-            $info->getOrder()->getAmount().
-            ($info->getInfo()['Term'] ?? '');
-
-        return $this->countChecksum($parameter);
+        return $this->doCountChecksum(
+            $info->prepareChecksumParameter($this->tradePassword)
+        );
     }
 
     /**
-     * 查訊用的檢核碼
-     * @param OrderInterface $order
-     * @param string $buysafeno 紅陽提供的交易編號
-     * @param string $note1 備註1
-     * @param string $note2 備註1
-     * @return string
-     */
-    public function countQueryChecksum(OrderInterface $order, string $buysafeno = '', string $note1 = '', string $note2 = '')
-    {
-        $parameter = $this->getId().
-            $this->getTradePassword().
-            $order->getAmount().
-            $buysafeno.
-            $order->getMerchantOrderNo().
-            $note1.
-            $note2;
-
-        return $this->countChecksum($parameter);
-    }
-
-    /**
+     * 紅陽說怎麼算就怎麼算
      * @param string $input
      * @return string
      */
-    protected function countChecksum(string $input)
+    protected function doCountChecksum(string $input)
     {
         return strtoupper(sha1($input));
     }

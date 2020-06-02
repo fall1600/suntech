@@ -2,10 +2,11 @@
 
 namespace fall1600\Package\Suntech\Info;
 
+use fall1600\Package\Suntech\Contracts\ChecksumSubjectInterface;
 use fall1600\Package\Suntech\Contracts\OrderInterface;
 use fall1600\Package\Suntech\Contracts\PayerInterface;
 
-abstract class Info
+abstract class Info implements ChecksumSubjectInterface
 {
     /**
      * @var string
@@ -63,5 +64,13 @@ abstract class Info
     public function getMerchantId()
     {
         return $this->merchantId;
+    }
+
+    public function prepareChecksumParameter(string $tradePassword)
+    {
+        return $this->getMerchantId().
+            $tradePassword.
+            $this->getOrder()->getAmount().
+            ($this->getInfo()['Term'] ?? '');
     }
 }

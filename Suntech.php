@@ -2,7 +2,6 @@
 
 namespace fall1600\Package\Suntech;
 
-use fall1600\Package\Suntech\Contracts\OrderInterface;
 use fall1600\Package\Suntech\Info\Info;
 
 class Suntech
@@ -69,7 +68,7 @@ class Suntech
 
         $url = $this->isProduction? static::CHECKOUT_URL_PRODUCTION: static::CHECKOUT_URL_TEST;
 
-        $checksum = $this->merchant->countCheckoutChecksum($info);
+        $checksum = $this->merchant->countChecksum($info);
 
         $form = "<form name='suntech' id='$this->formId' method='post' action='$url' style='display: none'>";
         $form .= "<input type='hidden' name='ChkValue' value='$checksum' />";
@@ -84,13 +83,10 @@ class Suntech
     }
 
     /**
-     * @param OrderInterface $order
-     * @param string $buysafeno 紅陽提供的交易編號
-     * @param string $note1 備註1
-     * @param string $note2 備註1
+     * @param QueryRequest $request
      * @return array
      */
-    public function query(OrderInterface $order, string $buysafeno = '', string $note1 = '', string $note2 = '')
+    public function query(QueryRequest $request)
     {
         if (! $this->merchant) {
             throw new \LogicException('empty merchant');
@@ -98,15 +94,10 @@ class Suntech
 
         $url = $this->isProduction? static::QUERY_URL_PRODUCTION: static::QUERY_URL_TEST;
 
-        $payload = [
-            'web' => $this->merchant->getId(),
-            'MN' => $order->getAmount(),
-            'buysafeno' => $buysafeno,
-            'Td' => $order->getMerchantOrderNo(),
-            'note1' => $note1,
-            'note2' => $note2,
-            'ChkValue' => $this->merchant->countQueryChecksum($order, $buysafeno, $note1, $note2),
-        ];
+        $payload = $request->getPayload() +
+            [
+                'ChkValue' => $this->merchant->countChecksum($request),
+            ];
 
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_POST, 1);

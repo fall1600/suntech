@@ -2,7 +2,9 @@
 
 namespace fall1600\Package\Suntech\Response;
 
-abstract class AbstractResponse
+use fall1600\Package\Suntech\Contracts\ChecksumSubjectInterface;
+
+abstract class AbstractResponse implements ChecksumSubjectInterface
 {
     /**
      * @var array

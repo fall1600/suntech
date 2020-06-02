@@ -79,4 +79,15 @@ class QueryResponse extends AbstractResponse
     {
         return $this->data[7] ?? null;
     }
+
+    public function prepareChecksumParameter(string $tradePassword)
+    {
+        return $this->getMerchantId().
+            $tradePassword.
+            $this->getAmount().
+            $this->getBuySafeNo().
+            $this->getData()['Td'].
+            $this->getData()['note1'].
+            $this->getData()['note2'];
+    }
 }
