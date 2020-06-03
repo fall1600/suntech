@@ -65,32 +65,17 @@ class Merchant
             throw new \LogicException('set rawData first');
         }
 
-        $responseChecksum = $this->response->getChecksum();
-        $countedChecksum = $this->doCountChecksum(
-            $this->response->prepareChecksumParameter($this->tradePassword)
-        );
-        return $responseChecksum === $countedChecksum;
-    }
-
-    /**
-     * @param ChecksumSubjectInterface $info
-     * @return string
-     */
-    public function countChecksum(ChecksumSubjectInterface $info)
-    {
-        return $this->doCountChecksum(
-            $info->prepareChecksumParameter($this->tradePassword)
-        );
+        return $this->response->getChecksum() === $this->countChecksum($this->response);
     }
 
     /**
      * 紅陽說怎麼算就怎麼算
-     * @param string $input
+     * @param  ChecksumSubjectInterface  $subject
      * @return string
      */
-    protected function doCountChecksum(string $input)
+    public function countChecksum(ChecksumSubjectInterface $subject)
     {
-        return strtoupper(sha1($input));
+        return strtoupper(sha1($subject->prepareChecksumParameter($this->tradePassword)));
     }
 
     /**
