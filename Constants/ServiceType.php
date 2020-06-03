@@ -13,7 +13,7 @@ class ServiceType extends Enum
     public const UNION_PAY = 'union_pay';
 
     // 超商代碼
-    public const CVS_PAY_CODE = 'cvs_pay_code';
+    public const CVS_PAYCODE = 'cvs_paycode';
 
     // 超商條碼
     public const CVS_BARCODE = 'cvs_barcode';

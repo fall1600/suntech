@@ -24,7 +24,7 @@ class Factory
                 return new UnionPayCheckoutResponse($rawDate);
             case ServiceType::WEB_ATM:
                 return new WebAtmCheckoutResponse($rawDate);
-            case ServiceType::CVS_PAY_CODE:
+            case ServiceType::CVS_PAYCODE:
                 return new CvsPaycodeCheckoutResponse($rawDate);
             case ServiceType::CVS_BARCODE:
                 return new CvsBarcodeCheckoutResponse($rawDate);
