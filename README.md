@@ -2,7 +2,7 @@
 
 [Official Doc](https://www.esafe.com.tw/Question_Fd/DownloadPapers.aspx)
 
-簡述: 在紅陽金流裡商城與付款方式綁定, 也就是一個商城id 代表一種付款方式, 而且轉導至付款頁時
+簡述: 在紅陽金流裡商城與付款方式綁定, 一個商城id 代表一種付款方式, 轉導至結帳頁時也只會顯示一種付款方式
 
 #### 支援付款方式
 - [x] 信用卡
