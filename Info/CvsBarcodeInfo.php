@@ -5,7 +5,7 @@ namespace fall1600\Package\Suntech\Info;
 /**
  * 超商條碼繳費單
  */
-final class CvsBarcodeInfo extends OfflineInfo
+class CvsBarcodeInfo extends OfflineInfo
 {
     use ProductTrait;
 

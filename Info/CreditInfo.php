@@ -6,7 +6,7 @@ use fall1600\Package\Suntech\Constants\TermType;
 use fall1600\Package\Suntech\Contracts\OrderInterface;
 use fall1600\Package\Suntech\Contracts\PayerInterface;
 
-final class CreditInfo extends Info
+class CreditInfo extends Info
 {
     /**
      * 分期設定

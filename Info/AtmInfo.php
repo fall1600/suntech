@@ -2,7 +2,7 @@
 
 namespace fall1600\Package\Suntech\Info;
 
-final class AtmInfo extends OfflineInfo
+class AtmInfo extends OfflineInfo
 {
     use ProductTrait;
 

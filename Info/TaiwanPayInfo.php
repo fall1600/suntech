@@ -2,6 +2,7 @@
 
 namespace fall1600\Package\Suntech\Info;
 
-class WebAtmInfo extends Info
+class TaiwanPayInfo extends CreditInfo
 {
+
 }
