@@ -48,7 +48,7 @@ class Merchant
      */
     public function setRawData(array $rawData, string $type)
     {
-        if (! isset($rawData['ChkValue'])) {
+        if (! isset($rawData['ChkValue']) && $type !== 'query') {
             throw new TradeInfoException('invalid data');
         }
 

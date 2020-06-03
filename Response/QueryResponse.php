@@ -86,8 +86,6 @@ class QueryResponse extends AbstractResponse
             $tradePassword.
             $this->getAmount().
             $this->getBuySafeNo().
-            $this->getData()['Td'].
-            $this->getData()['note1'].
-            $this->getData()['note2'];
+            $this->getStatusCode();
     }
 }
