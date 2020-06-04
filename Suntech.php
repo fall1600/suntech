@@ -31,6 +31,16 @@ class Suntech
     public const QUERY_URL_PRODUCTION = 'https://www.esafe.com.tw/Service/PaymentCheck.aspx';
 
     /**
+     * 選收件店-測試環境
+     */
+    public const SELECT_STORE_URL_TEST = 'https://www.esafe.com.tw/Service/Store_Select.aspx';
+
+    /**
+     * 選收件店-正式環境
+     */
+    public const SELECT_STORE_URL_PRODUCTION = 'https://test.esafe.com.tw/Service/Store_Select.aspx';
+
+    /**
      * 決定URL 要使用正式或測試機
      * @var bool
      */
@@ -41,6 +51,25 @@ class Suntech
 
     protected $formId = 'suntech-form';
 
+    public function selectStore(StoreRequest $request)
+    {
+        echo <<<EOT
+        <!DOCTYPE html>
+            <html>
+                <head>
+                    <meta charset="utf-8">
+                </head>
+                <body>
+                    {$this->generateStoreForm($request)}
+                    <script>
+                        var form = document.getElementById("$this->formId");
+                        form.submit();
+                    </script>
+                </bod>
+            </html>
+        EOT;
+    }
+    
     public function checkout(Info $info)
     {
         echo <<<EOT
@@ -80,6 +109,27 @@ class Suntech
         $form .= "</form>";
 
         return $form;
+    }
+
+    public function generateStoreForm(StoreRequest $request)
+    {
+        if (! $this->merchant) {
+            throw new \LogicException('empty merchant');
+        }
+
+        $url = $this->isProduction? static::SELECT_STORE_URL_PRODUCTION: static::SELECT_STORE_URL_TEST;
+
+        $checksum = $this->merchant->countChecksum($request);
+
+        return <<<EOT
+        <form id='{$this->formId}' method='post' action='$url' style='display: none'">
+            <input type="hidden" name="CargoFlag" value="{$request->getCargoType()}"/>
+            <input type="hidden" name="web" value="{$request->getMerchantId()}"/>
+            <input type="hidden" name="OrderID" value="{$request->getOrder()->getMerchantOrderNo()}"/>
+            <input type="hidden" name="ReturnURL" value="{$request->getReturnUrl()}"/>
+            <input type="hidden" name="ChkValue" value="$checksum"/>
+        </form>
+        EOT;
     }
 
     /**
