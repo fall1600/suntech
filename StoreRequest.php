@@ -43,40 +43,19 @@ class StoreRequest implements ChecksumSubjectInterface
     {
         return $this->merchantId.
             $tradePassword.
+            $this->order->getMerchantOrderNo() ?? ''.
             $this->cargoType.
             $this->returnUrl;
     }
 
-    /**
-     * @return string
-     */
-    public function getMerchantId()
+    public function toArray()
     {
-        return $this->merchantId;
-    }
-
-    /**
-     * @return string
-     */
-    public function getReturnUrl()
-    {
-        return $this->returnUrl;
-    }
-
-    /**
-     * @return int
-     */
-    public function getCargoType()
-    {
-        return $this->cargoType;
-    }
-
-    /**
-     * @return OrderInterface|null
-     */
-    public function getOrder()
-    {
-        return $this->order;
+        return [
+            'web' => $this->merchantId,
+            'CargoFlag' => $this->cargoType,
+            'OrderID' => $this->order->getMerchantOrderNo() ?? '',
+            'ReturnURL' => $this->returnUrl,
+        ];
     }
 
     protected function setCargoType(int $cargoType)

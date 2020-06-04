@@ -121,15 +121,16 @@ class Suntech
 
         $checksum = $this->merchant->countChecksum($request);
 
-        return <<<EOT
-        <form id='{$this->formId}' method='post' action='$url' style='display: none'">
-            <input type="hidden" name="CargoFlag" value="{$request->getCargoType()}"/>
-            <input type="hidden" name="web" value="{$request->getMerchantId()}"/>
-            <input type="hidden" name="OrderID" value="{$request->getOrder()->getMerchantOrderNo()}"/>
-            <input type="hidden" name="ReturnURL" value="{$request->getReturnUrl()}"/>
-            <input type="hidden" name="ChkValue" value="$checksum"/>
-        </form>
-        EOT;
+        $form = "<form name='suntech' id='$this->formId' method='post' action='$url' style='display: none'>";
+        $form .= "<input type='hidden' name='ChkValue' value='$checksum' />";
+
+        foreach ($request->toArray() as $key => $value) {
+            $form .=  "<input type='hidden' name='$key' value='$value' />";
+        }
+
+        $form .= "</form>";
+
+        return $form;
     }
 
     /**
