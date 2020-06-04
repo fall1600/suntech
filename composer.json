@@ -1,6 +1,6 @@
 {
     "name": "fall1600/suntech",
-    "description": "implements of suntech",
+    "description": "Payment solution of SunTech(紅陽科技), implementing by pure PHP",
     "keywords": ["suntech", "payment"],
     "type": "library",
     "license": "MIT",
