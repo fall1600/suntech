@@ -33,12 +33,16 @@ $info = new UnionPayInfo($unionMerchantId, $order, $payer);
 
 ```php
 // 虛擬Atm 付款, 與超商代收(條碼繳費單) 共用merchantId, webhook url設定; 文件第8頁
-$info = new AtmInfo($atmMerchantId, $order, $payer);
+$info = (new AtmInfo($atmMerchantId, $order, $payer))
+        ->appendProduct($product1)
+        ->appendProduct($product2);
 ```
 
 ```php
 // 超商代收(條碼繳費單)
-$info = new CvsBarcodeInfo($barcodeMerchantId, $order, $payer);
+$info = (new CvsBarcodeInfo($barcodeMerchantId, $order, $payer))
+        ->appendProduct($product1)
+        ->appendProduct($product2);
 ```
 
 ```php
