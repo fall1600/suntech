@@ -11,7 +11,7 @@
 - [x] 超商代收(條碼繳費單)
 - [x] 超商代碼
 - [x] WebATM
-- [ ] 台灣pay
+- [x] 台灣pay
 - [ ] 超商取貨付款
 
 ## How to use
@@ -48,6 +48,11 @@ $info = (new CvsBarcodeInfo($barcodeMerchantId, $order, $payer))
 ```php
 // 超商代碼(ibon, FamiPort 那種)
 $info = new CvsPaycodeInfo($paycodeMerchantId, $order, $payer);
+```
+
+```php
+// 台灣pay
+$info = new TaiwanPayInfo($twpayMerchantId, $order, $payer);
 ```
 
 #### 建立Suntech 物件, 注入商店資訊, 帶著交易資訊前往紅陽付款
@@ -104,6 +109,8 @@ $isValid = $merchant->setRawData($request->all(), ServiceType::CVS_BARCODE)->val
 $isValid = $merchant->setRawData($request->all(), ServiceType::ATM)->validateResponse();
 // WebATM 的交易結果
 $isValid = $merchant->setRawData($request->all(), ServiceType::WEB_ATM)->validateResponse();
+// 台灣pay 的交易結果
+$isValid = $merchant->setRawData($request->all(), ServiceType::TAIWAN_PAY)->validateResponse();
 
 // response 封裝了通知交易的結果, 以下僅列常用methods
 $resp = $merchant->getResponse();

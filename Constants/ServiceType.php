@@ -23,4 +23,7 @@ class ServiceType extends Enum
 
     // 網路ATM
     public const WEB_ATM = 'web_atm';
+
+    // 台灣pay
+    public const TAIWAN_PAY = 'taiwan_pay';
 }
