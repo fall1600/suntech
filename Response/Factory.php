@@ -30,6 +30,8 @@ class Factory
                 return new CvsBarcodeCheckoutResponse($rawDate);
             case ServiceType::ATM:
                 return new AtmCheckoutResponse($rawDate);
+            case ServiceType::TAIWAN_PAY:
+                return new TaiwanPayCheckoutResponse($rawDate);
             default:
                 throw new \LogicException('never goes here');
         }
