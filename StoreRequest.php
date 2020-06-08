@@ -43,7 +43,7 @@ class StoreRequest implements ChecksumSubjectInterface
     {
         return $this->merchantId.
             $tradePassword.
-            $this->order->getMerchantOrderNo() ?? ''.
+            ($this->order->getMerchantOrderNo() ?? '').
             $this->cargoType.
             $this->returnUrl;
     }
