@@ -18,6 +18,8 @@ class Factory
                 return new QueryResponse($rawDate);
             case 'payment':
                 return new PaymentResponse($rawDate);
+            case 'select-store':
+                return new SelectStoreResponse($rawDate);
             case ServiceType::CREDIT:
                 return new CreditCheckoutResponse($rawDate);
             case ServiceType::UNION_PAY:
