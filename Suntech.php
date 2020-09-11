@@ -44,20 +44,20 @@ class Suntech
     public function checkout(Info $info)
     {
         echo <<<EOT
-        <!DOCTYPE html>
-            <html>
-                <head>
-                    <meta charset="utf-8">
-                </head>
-                <body>
-                    {$this->generateForm($info)}
-                    <script>
-                        var form = document.getElementById("$this->formId");
-                        form.submit();
-                    </script>
-                </bod>
-            </html>
-        EOT;
+<!DOCTYPE html>
+    <html>
+        <head>
+            <meta charset="utf-8">
+        </head>
+        <body>
+            {$this->generateForm($info)}
+            <script>
+                var form = document.getElementById("$this->formId");
+                form.submit();
+            </script>
+        </bod>
+    </html>
+EOT;
     }
 
     public function generateForm(Info $info)
